@@ -21,6 +21,12 @@ def find_food_by_id(food_id):
     return wanted_food_record
 
 
+def save_file():
+    # save back to the JSON file
+    with open('foods.json', 'w') as fp:
+        json.dump(database, fp)
+
+
 @app.route('/')
 def index():
     return "Welcome"
@@ -73,6 +79,24 @@ def process_update_food(food_id):
     existing_food_record['meal'] = request.form.get('meal')
     existing_food_record['calories'] = request.form.get('calories')
 
+    save_file()
+
+    return redirect(url_for('show_food'))
+
+
+@app.route('/foods/<int:food_id>/delete')
+def show_delete_food(food_id):
+    food_to_delete = find_food_by_id(food_id)
+    return render_template('confirm_to_delete_food.template.html',
+                           food=food_to_delete)
+
+
+@app.route('/foods/<int:food_id>/delete', methods=["POST"])
+def process_delete_food(food_id):
+    food_record_to_delete = find_food_by_id(food_id)
+    database.remove(food_record_to_delete)
+
+    save_file()
     return redirect(url_for('show_food'))
 
 
