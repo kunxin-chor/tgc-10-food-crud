@@ -58,7 +58,7 @@ def process_add_food():
 @app.route('/foods/<int:food_id>/update')
 def show_update_food(food_id):
     # linear search to find the record that we want to edit
-    wanted_food_record =find_food_by_id(food_id)
+    wanted_food_record = find_food_by_id(food_id)
 
     return render_template('update_food.template.html',
                            food=wanted_food_record)
