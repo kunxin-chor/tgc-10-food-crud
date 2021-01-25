@@ -1,0 +1,33 @@
+{% extends 'base.template.html' %}
+
+{% block content %}
+<h1>Editing food record for: {{food.food_name}} </h1>
+<form method="POST">
+    <div>
+        <label class="form-label">Food Name</label>
+        <input type="text" class="form-control" name="food_name" value="{{food.food_name}}" />
+    </div>
+    <div>
+        <label class="form-label">When eaten?</label>
+        <input type="text" class="form-control" name="when_eaten" value="{{food.when_eaten}}"/>
+    </div>
+    <div>
+        <label class="form-label">Which meal?</label>
+        <select name="meal" class="form-control">
+            <option value="breakfast" {% if food.meal == 'breakfast' %} selected {%endif%}>Breakfast</option>
+            <option value="lunch" {% if food.meal=='lunch' %} selected {%endif%}>Lunch</option>
+            <option value="dinner" {% if food.meal=='dinner' %} selected {%endif%}>Dinner</option>
+            <option value="supper" {% if food.meal=='supper' %} selected {%endif%}>Supper</option>
+            <option value="snacks" {% if food.meal=='snacks' %} selected {%endif%}>Snacks</option>
+            <option value="others" {% if food.meal=='lunch' %} selected {%endif%}>Others</option>
+        </select>
+    </div>
+
+    <div>
+        <label class="form-label">Calories</label>
+        <input type="text" class="form-control" name="calories" value="{{food.calories}}"/>
+    </div>
+    <input type="submit" class="btn btn-primary" value="Update" />
+</form>
+
+{% endblock %}

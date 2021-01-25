@@ -9,6 +9,23 @@ with open('foods.json') as fp:
     database = json.load(fp)
 
 
+def find_food_by_id(food_id):
+    wanted_food_record = None
+    for food_record in database:
+        if food_record["id"] == food_id:
+            wanted_food_record = food_record
+            # stop the for loop since we already found
+            # what we want
+            break
+
+    return wanted_food_record
+
+
+@app.route('/')
+def index():
+    return "Welcome"
+
+
 @app.route('/foods')
 def show_food():
     return render_template('foods.template.html', all_food=database)
@@ -34,6 +51,27 @@ def process_add_food():
     # save back to the JSON file
     with open('foods.json', 'w') as fp:
         json.dump(database, fp)
+
+    return redirect(url_for('show_food'))
+
+
+@app.route('/foods/<int:food_id>/update')
+def show_update_food(food_id):
+    # linear search to find the record that we want to edit
+    wanted_food_record =find_food_by_id(food_id)
+
+    return render_template('update_food.template.html',
+                           food=wanted_food_record)
+
+
+@app.route('/foods/<int:food_id>/update', methods=["POST"])
+def process_update_food(food_id):
+    # do a linear search to find the food we are updating
+    existing_food_record = find_food_by_id(food_id)
+    existing_food_record['food_name'] = request.form.get('food_name')
+    existing_food_record['when_eaten'] = request.form.get('when_eaten')
+    existing_food_record['meal'] = request.form.get('meal')
+    existing_food_record['calories'] = request.form.get('calories')
 
     return redirect(url_for('show_food'))
 
