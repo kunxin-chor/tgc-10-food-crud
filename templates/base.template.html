@@ -12,6 +12,19 @@
   </head>
   <body>
     <div class="container">
+    {% with messages = get_flashed_messages() %}
+
+    {% if messages %}
+        <div class="alert alert-success mt-3">
+            {% for m in messages%}
+            <li>{{m}}</li>
+            {% endfor %}
+        </div>
+
+    {% endif%}
+
+    {% endwith%}
+
     {% block content %}{% endblock%}
    </div>
 

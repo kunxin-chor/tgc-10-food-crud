@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import os
 import json
 import random
@@ -7,6 +7,10 @@ app = Flask(__name__)
 database = {}
 with open('foods.json') as fp:
     database = json.load(fp)
+
+
+# enable sessions in Flask
+app.secret_key = "TXnMDbLxvBdHNCD6KjHfOkErrCuuNDWr"
 
 
 def find_food_by_id(food_id):
@@ -58,6 +62,7 @@ def process_add_food():
     with open('foods.json', 'w') as fp:
         json.dump(database, fp)
 
+    flash("New food record has been added")
     return redirect(url_for('show_food'))
 
 
@@ -81,6 +86,7 @@ def process_update_food(food_id):
 
     save_file()
 
+    flash("Food record has been updated")
     return redirect(url_for('show_food'))
 
 
